@@ -64,23 +64,49 @@ const PHOTOS_COUNT = 25;
  */
 const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
+/**
+ * Возвращает случайный элемент из массива
+ *
+ * @param {Array} array - Массив, из которого выбирается элемент
+ * @returns {*} - Случайный элемент массива
+ *
+ * @throws {RangeError} - Если массив пустой
+ */
 const getRandomElement = (array) => array[getRandomInt(0, array.length - 1)];
 
-// Функция для создания уникального ID (глобальный счётчик)
-let globalId = 1;
-const getUniqueId = () => globalId++;
+/**
+ * Создает фабрику счетчиков, используя замыкание
+ *
+ * @param {number} [start=1] - Начальное значение счетчика
+ * @returns {()=>number} - Функция-счетчик, увеличивающая значение на 1 при каждом вызове
+ */
+const createCounter = (start = 1) => {
+  let count = start;
+  return () => count++;
+};
 
-// Функция для генерации одного комментария
+const getPhotoId = createCounter(1);
+const getCommentId = createCounter(1);
+
+/**
+ * Генерирует один случайный комментарий
+ *
+ * @returns {Object} - Объект комментария со свойствами id, avatar, message, name
+ */
 const createComment = () => ({
-  id: getUniqueId(),
+  id: getCommentId(),
   avatar: `img/avatar-${getRandomInt(MIN_AVATAR, MAX_AVATAR)}.svg`,
-  message: Array.from({length: getRandomInt(MIN_MESSAGES, MAX_MESSAGES)}, getRandomElement(MESSAGES)),
+  message: Array.from({length: getRandomInt(MIN_MESSAGES, MAX_MESSAGES)}, () => getRandomElement(MESSAGES)),
   name: getRandomElement(NAMES)
 });
 
-// Функция для генерации одной фотографии
+/**
+ * Генерирует одну фотографию с комментариями
+ *
+ * @returns {Object} - Объект фотографии со свойствами id, url, description, likes, comments
+ */
 const createPhoto = () => {
-  const photoId = getUniqueId();
+  const photoId = getPhotoId();
   return {
     id: photoId,
     url: `photos/${photoId}.jpg`,
@@ -90,7 +116,11 @@ const createPhoto = () => {
   };
 };
 
-// Функция для генерации массива фотографий
+/**
+ * Генерирует массив случайный фотографий в количестве PHOTOS_COUNT
+ *
+ * @returns {Array} - Массив объектов фотографий
+ */
 const createPhotos = () => Array.from({length: PHOTOS_COUNT}, createPhoto);
 
 console.log(createPhotos());
