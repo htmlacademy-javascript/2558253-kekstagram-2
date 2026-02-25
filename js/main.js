@@ -121,6 +121,4 @@ const createPhoto = () => {
  *
  * @returns {Array} - Массив объектов фотографий
  */
-const createPhotos = () => Array.from({length: PHOTOS_COUNT}, createPhoto);
-
-console.log(createPhotos());
+export const createPhotos = () => Array.from({length: PHOTOS_COUNT}, createPhoto);
