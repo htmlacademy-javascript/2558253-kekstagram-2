@@ -68,9 +68,7 @@ const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + 
  * Возвращает случайный элемент из массива
  *
  * @param {Array} array - Массив, из которого выбирается элемент
- * @returns {*} - Случайный элемент массива
- *
- * @throws {RangeError} - Если массив пустой
+ * @returns {*} Случайный элемент массива
  */
 const getRandomElement = (array) => array[getRandomInt(0, array.length - 1)];
 
@@ -78,7 +76,7 @@ const getRandomElement = (array) => array[getRandomInt(0, array.length - 1)];
  * Создает фабрику счетчиков, используя замыкание
  *
  * @param {number} [start=1] - Начальное значение счетчика
- * @returns {()=>number} - Функция-счетчик, увеличивающая значение на 1 при каждом вызове
+ * @returns {() => number} Функция-счетчик, увеличивающая значение на 1 при каждом вызове
  */
 const createCounter = (start = 1) => {
   let count = start;
@@ -91,9 +89,13 @@ const getCommentId = createCounter(1);
 /**
  * Генерирует один случайный комментарий
  *
- * @returns {Object} - Объект комментария со свойствами id, avatar, message, name
+ * @typedef {Object} Comment
+ * @property {number} id - Уникальный идентификатор комментария
+ * @property {string} avatar - Путь к SVG аватару пользователя (img/avatar-X.svg)
+ * @property {string[]} message - Массив строк - части сообщения
+ * @property {string} name - Имя пользователя из списка
  */
-const createComment = () => ({
+export const createComment = () => ({
   id: getCommentId(),
   avatar: `img/avatar-${getRandomInt(MIN_AVATAR, MAX_AVATAR)}.svg`,
   message: Array.from({length: getRandomInt(MIN_MESSAGES, MAX_MESSAGES)}, () => getRandomElement(MESSAGES)),
@@ -101,9 +103,12 @@ const createComment = () => ({
 });
 
 /**
- * Генерирует одну фотографию с комментариями
- *
- * @returns {Object} - Объект фотографии со свойствами id, url, description, likes, comments
+ * @typedef {Object} Photo
+ * @property {number} id - Уникальный идентификатор фотографии
+ * @property {string} url - Путь к фотографии
+ * @property {string} description - Описание фотографии
+ * @property {number} likes - Количество лайков
+ * @property {Comment[]} comments - Массив с объектами комментариев
  */
 const createPhoto = () => {
   const photoId = getPhotoId();
@@ -119,6 +124,6 @@ const createPhoto = () => {
 /**
  * Генерирует массив случайный фотографий в количестве PHOTOS_COUNT
  *
- * @returns {Array} - Массив объектов фотографий
+ * @returns {Photo[]} Массив, заполненный элементами типа Photo
  */
 export const createPhotos = () => Array.from({length: PHOTOS_COUNT}, createPhoto);
