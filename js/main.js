@@ -1,3 +1,20 @@
+/**
+ * @typedef {Object} Comment
+ * @property {number} id - Уникальный идентификатор комментария
+ * @property {string} avatar - Путь к SVG аватару пользователя (img/avatar-X.svg)
+ * @property {string[]} message - Массив строк - части сообщения
+ * @property {string} name - Имя пользователя из списка
+ */
+
+/**
+ * @typedef {Object} Photo
+ * @property {number} id - Уникальный идентификатор фотографии
+ * @property {string} url - Путь к фотографии
+ * @property {string} description - Описание фотографии
+ * @property {number} likes - Количество лайков
+ * @property {Comment[]} comments - Массив с объектами комментариев
+ */
+
 const DESCRIPTIONS = [
   'Красивый закат над морем',
   'Утро в горах',
@@ -42,7 +59,7 @@ const MESSAGES = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-// мин и макс значения лайков,аватаров и комментариев;количество объектов в итоговом массиве
+// мин и макс значения лайков, аватаров и комментариев; количество объектов в итоговом массиве
 const MIN_LIKES = 15;
 const MAX_LIKES = 200;
 const MIN_AVATAR = 1;
@@ -67,8 +84,8 @@ const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + 
 /**
  * Возвращает случайный элемент из массива
  *
- * @param {Array} array - Массив, из которого выбирается элемент
- * @returns {*} Случайный элемент массива
+ * @param {string[]} array - Массив, из которого выбирается элемент
+ * @returns {string} Случайный элемент массива
  */
 const getRandomElement = (array) => array[getRandomInt(0, array.length - 1)];
 
@@ -89,11 +106,7 @@ const getCommentId = createCounter(1);
 /**
  * Генерирует один случайный комментарий
  *
- * @typedef {Object} Comment
- * @property {number} id - Уникальный идентификатор комментария
- * @property {string} avatar - Путь к SVG аватару пользователя (img/avatar-X.svg)
- * @property {string[]} message - Массив строк - части сообщения
- * @property {string} name - Имя пользователя из списка
+ * @return Comment
  */
 export const createComment = () => ({
   id: getCommentId(),
@@ -103,12 +116,7 @@ export const createComment = () => ({
 });
 
 /**
- * @typedef {Object} Photo
- * @property {number} id - Уникальный идентификатор фотографии
- * @property {string} url - Путь к фотографии
- * @property {string} description - Описание фотографии
- * @property {number} likes - Количество лайков
- * @property {Comment[]} comments - Массив с объектами комментариев
+ * @returns {Photo}
  */
 const createPhoto = () => {
   const photoId = getPhotoId();
@@ -122,7 +130,7 @@ const createPhoto = () => {
 };
 
 /**
- * Генерирует массив случайный фотографий в количестве PHOTOS_COUNT
+ * Генерирует массив случайной фотографий в количестве PHOTOS_COUNT
  *
  * @returns {Photo[]} Массив, заполненный элементами типа Photo
  */
