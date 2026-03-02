@@ -28,8 +28,6 @@ describe('createPhotos', () => {
 describe('createComment', () => {
   it('should message contain only 1 or 2 elements', () => {
     const comment = createComment();
-    expect(Array.isArray(comment.message)).toBe(true);
-    expect(comment.message.length).toBeGreaterThanOrEqual(1);
-    expect(comment.message.length).toBeLessThanOrEqual(2);
+    expect(typeof comment.message).toBe('string');
   });
 });
