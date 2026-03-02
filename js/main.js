@@ -2,7 +2,7 @@
  * @typedef {Object} Comment
  * @property {number} id - Уникальный идентификатор комментария
  * @property {string} avatar - Путь к SVG аватару пользователя (img/avatar-X.svg)
- * @property {string[]} message - Массив строк - части сообщения
+ * @property {string} message - Сообщение
  * @property {string} name - Имя пользователя из списка
  */
 
@@ -76,8 +76,6 @@ const PHOTOS_COUNT = 25;
  * @param {number} min - Минимальное значение диапазона (включительно)
  * @param {number} max - Максимальное значение диапазона (включительно)
  * @returns {number} Случайное целое число от min до max включительно
- *
- * @throws {RangeError} Если min > max
  */
 const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
@@ -106,16 +104,17 @@ const getCommentId = createCounter(1);
 /**
  * Генерирует один случайный комментарий
  *
- * @return Comment
+ * @returns {Comment}
  */
 export const createComment = () => ({
   id: getCommentId(),
   avatar: `img/avatar-${getRandomInt(MIN_AVATAR, MAX_AVATAR)}.svg`,
-  message: Array.from({length: getRandomInt(MIN_MESSAGES, MAX_MESSAGES)}, () => getRandomElement(MESSAGES)),
+  message: Array.from({length: getRandomInt(MIN_MESSAGES, MAX_MESSAGES)}, () => getRandomElement(MESSAGES)).join(' '),
   name: getRandomElement(NAMES)
 });
 
 /**
+ * Генерирует одну фотографию
  * @returns {Photo}
  */
 const createPhoto = () => {
