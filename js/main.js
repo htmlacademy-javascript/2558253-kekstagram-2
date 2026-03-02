@@ -1,0 +1,136 @@
+/**
+ * @typedef {Object} Comment
+ * @property {number} id - Уникальный идентификатор комментария
+ * @property {string} avatar - Путь к SVG аватару пользователя (img/avatar-X.svg)
+ * @property {string} message - Сообщение
+ * @property {string} name - Имя пользователя из списка
+ */
+
+/**
+ * @typedef {Object} Photo
+ * @property {number} id - Уникальный идентификатор фотографии
+ * @property {string} url - Путь к фотографии
+ * @property {string} description - Описание фотографии
+ * @property {number} likes - Количество лайков
+ * @property {Comment[]} comments - Массив с объектами комментариев
+ */
+
+const DESCRIPTIONS = [
+  'Красивый закат над морем',
+  'Утро в горах',
+  'Мой любимый кот',
+  'Прогулка по парку',
+  'Осенние листья',
+  'Зимний лес',
+  'Весенние цветы',
+  'Летний пляж',
+  'Городские огни ночью',
+  'Кофе с видом на реку',
+  'Книги и чай',
+  'Дорога домой',
+  'Небо в звёздах',
+  'Море волн',
+  'Солнце сквозь облака',
+  'Друзья и смех',
+  'Тихий вечер',
+  'Улыбка дня',
+  'Путешествие начинается',
+  'Момент счастья',
+  'Природа зовёт',
+  'Городской ритм',
+  'Спокойствие',
+  'Энергия дня',
+  'Мечты сбываются'
+];
+
+const NAMES = [
+  'Анна', 'Иван', 'Мария', 'Дмитрий', 'Елена', 'Алексей', 'Ольга', 'Сергей',
+  'Татьяна', 'Михаил', 'Екатерина', 'Николай', 'Светлана', 'Виктор', 'Юлия',
+  'Павел', 'Наталья', 'Андрей', 'Ирина', 'Константин', 'Евгения', 'Роман',
+  'Александра', 'Владимир', 'Галина'
+];
+
+const MESSAGES = [
+  'Всё отлично!',
+  'В целом всё неплохо. Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
+];
+
+// мин и макс значения лайков, аватаров и комментариев; количество объектов в итоговом массиве
+const MIN_LIKES = 15;
+const MAX_LIKES = 200;
+const MIN_AVATAR = 1;
+const MAX_AVATAR = 6;
+const MIN_COMMENTS = 0;
+const MAX_COMMENTS = 30;
+const MIN_MESSAGES = 1;
+const MAX_MESSAGES = 2;
+const PHOTOS_COUNT = 25;
+
+/**
+ * Возвращает случайное целое число в заданном диапазоне включительно.
+ *
+ * @param {number} min - Минимальное значение диапазона (включительно)
+ * @param {number} max - Максимальное значение диапазона (включительно)
+ * @returns {number} Случайное целое число от min до max включительно
+ */
+const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+
+/**
+ * Возвращает случайный элемент из массива
+ *
+ * @param {string[]} array - Массив, из которого выбирается элемент
+ * @returns {string} Случайный элемент массива
+ */
+const getRandomElement = (array) => array[getRandomInt(0, array.length - 1)];
+
+/**
+ * Создает фабрику счетчиков, используя замыкание
+ *
+ * @param {number} [start=1] - Начальное значение счетчика
+ * @returns {() => number} Функция-счетчик, увеличивающая значение на 1 при каждом вызове
+ */
+const createCounter = (start = 1) => {
+  let count = start;
+  return () => count++;
+};
+
+const getPhotoId = createCounter(1);
+const getCommentId = createCounter(1);
+
+/**
+ * Генерирует один случайный комментарий
+ *
+ * @returns {Comment}
+ */
+export const createComment = () => ({
+  id: getCommentId(),
+  avatar: `img/avatar-${getRandomInt(MIN_AVATAR, MAX_AVATAR)}.svg`,
+  message: Array.from({length: getRandomInt(MIN_MESSAGES, MAX_MESSAGES)}, () => getRandomElement(MESSAGES)).join(' '),
+  name: getRandomElement(NAMES)
+});
+
+/**
+ * Генерирует одну фотографию
+ * @returns {Photo}
+ */
+const createPhoto = () => {
+  const photoId = getPhotoId();
+  return {
+    id: photoId,
+    url: `photos/${photoId}.jpg`,
+    description: getRandomElement(DESCRIPTIONS),
+    likes: getRandomInt(MIN_LIKES, MAX_LIKES),
+    comments: Array.from({length: getRandomInt(MIN_COMMENTS, MAX_COMMENTS)}, createComment)
+  };
+};
+
+/**
+ * Генерирует массив случайной фотографий в количестве PHOTOS_COUNT
+ *
+ * @returns {Photo[]} Массив, заполненный элементами типа Photo
+ */
+export const createPhotos = () => Array.from({length: PHOTOS_COUNT}, createPhoto);
