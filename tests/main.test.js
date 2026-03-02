@@ -26,7 +26,7 @@ describe('createPhotos', () => {
 });
 
 describe('createComment', () => {
-  it('should message contain only 1 or 2 elements', () => {
+  it('should message be string', () => {
     const comment = createComment();
     expect(typeof comment.message).toBe('string');
   });
