@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { checkLength, isPalindrome, getNumbers } from '../js/functions.js';
+import { checkLength, isPalindrome, getNumbers, isMeetingInWorkday } from '../js/functions.js';
 
 describe('checkLength', () => {
   it('should return true for short strings', () => {
@@ -49,5 +49,23 @@ describe('getNumbers', () => {
     expect(getNumbers('abc')).toBe(0);
     expect(getNumbers(null)).toBe(0);
     expect(getNumbers(undefined)).toBe(0);
+  });
+});
+
+describe('isMeetingInWorkday', () => {
+  it('should return true for a meeting within workday', () => {
+    expect(isMeetingInWorkday('09:00', '18:00', '10:00', 60)).toBe(true);
+    expect(isMeetingInWorkday('8:0', '10:0', '8:0', 120)).toBe(true);
+    expect(isMeetingInWorkday('09:00', '18:00', '09:00', 0)).toBe(true);
+  });
+  it('should handle edge cases', () => {
+    expect(isMeetingInWorkday('09:00', '18:00', '09:00', 60)).toBe(true);
+    expect(isMeetingInWorkday('09:00', '18:00', '17:59', 1)).toBe(true);
+    expect(isMeetingInWorkday('09:00', '18:00', '08:59', 1)).toBe(false);
+    expect(isMeetingInWorkday('09:00', '18:00', '18:00', 1)).toBe(false);
+  });
+  it('should return false for a meeting not within workday', () => {
+    expect(isMeetingInWorkday('09:00', '18:00', '17:30', 45)).toBe(false);
+    expect(isMeetingInWorkday('09:00', '18:00', '08:30', 45)).toBe(false);
   });
 });
