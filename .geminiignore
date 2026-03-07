@@ -3,10 +3,17 @@ vendor/
 
 package-lock.json
 skills-lock.json
+.gitattributes
 
+Workflow.md
+Contributing.md
+Readme.md
+
+css/
 img/
 fonts/
 photos/
+
 favicon.ico
 *.png
 *.jpg
