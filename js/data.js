@@ -26,7 +26,7 @@ const getCommentId = createCounter(1);
  *
  * @returns {Comment}
  */
-const createComment = () => ({
+export const createComment = () => ({
   id: getCommentId(),
   avatar: `img/avatar-${getRandomInt(MIN_AVATAR, MAX_AVATAR)}.svg`,
   message: Array.from({length: getRandomInt(MIN_MESSAGES, MAX_MESSAGES)}, () => getRandomElement(MESSAGES)).join(' '),

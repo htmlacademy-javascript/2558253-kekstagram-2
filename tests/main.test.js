@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { createPhotos, createComment } from '../js/main.js';
+import { createPhotos, createComment } from '../js/data.js';
 
 describe('createPhotos', () => {
   it('should return array of 25 photos', () => {

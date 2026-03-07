@@ -38,3 +38,16 @@ export const getNumbers = (input = '') => {
   const digitsOnly = string.replace(/\D/g, '');
   return digitsOnly ? parseInt(digitsOnly, 10) : 0;
 };
+
+const timeToMinutes = (time) => {
+  const [hours, minutes] = time.split(':').map(Number);
+  return hours * 60 + minutes;
+};
+
+export const isMeetingInWorkday = (startWork, endWork, startMeeting, duration) => {
+  const startWorkMinutes = timeToMinutes(startWork);
+  const endWorkMinutes = timeToMinutes(endWork);
+  const startMeetingMinutes = timeToMinutes(startMeeting);
+  const endMeetingMinutes = startMeetingMinutes + duration;
+  return startMeetingMinutes >= startWorkMinutes && endMeetingMinutes <= endWorkMinutes;
+};
